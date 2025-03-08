@@ -16,8 +16,15 @@ def add_task(request):
     return redirect('/')
 
 @login_required
-@permission_required('tasks.delete_task', raise_exception=True)
+# @permission_required('tasks.delete_task', raise_exception=True)
 def delete_task(request, task_id):
     task = Task.objects.get(id=task_id)
     task.delete()
+    return redirect('/')
+
+@login_required
+def complete_task(request, task_id):
+    task = Task.objects.get(id=task_id)
+    task.completed = not (task.completed)
+    task.save()
     return redirect('/')
